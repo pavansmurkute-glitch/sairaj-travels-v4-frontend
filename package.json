@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --port $PORT --host 0.0.0.0"
+    "start": "vite preview --port $PORT --host 0.0.0.0",
+    "postinstall": "echo 'Dependencies installed successfully'"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -46,7 +47,7 @@
     "vite": "^7.1.6"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
   }
 }
