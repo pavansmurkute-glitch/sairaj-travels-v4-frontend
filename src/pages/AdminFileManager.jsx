@@ -183,7 +183,7 @@ const AdminFileManager = () => {
     if (!newFolderName.trim()) return;
     
     try {
-      const response = await fetch('http://localhost:8080/api/admin/files/create-folder', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v4-backend.onrender.com'}/api/admin/files/create-folder`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -263,7 +263,7 @@ const AdminFileManager = () => {
         }
       };
 
-      xhr.open('POST', 'http://localhost:8080/api/admin/files/upload');
+      xhr.open('POST', `${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v4-backend.onrender.com'}/api/admin/files/upload`);
       xhr.send(formData);
     } catch (error) {
       console.error('Upload error:', error);

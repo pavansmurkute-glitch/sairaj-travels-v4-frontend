@@ -65,7 +65,7 @@ export default function BookingPage() {
   const resolveImageSrc = (imgPath) => {
     if (!imgPath) return "/images/placeholder.png";
     if (imgPath.startsWith("http://") || imgPath.startsWith("https://")) return imgPath;
-    const baseUrl = import.meta.env.VITE_API_BASE?.replace('/api', '') || 'http://localhost:8080';
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://sairaj-travels-v4-backend.onrender.com';
     if (imgPath.startsWith("/")) return `${baseUrl}${imgPath}`;
     return `${baseUrl}/${imgPath}`;
   };
