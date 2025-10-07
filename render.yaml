@@ -10,7 +10,7 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        value: https://sairaj-travels-backend.onrender.com
+        value: https://sairaj-travels-v4-backend.onrender.com
       - key: NODE_ENV
         value: production
     routes:
