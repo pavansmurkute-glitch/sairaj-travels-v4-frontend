@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Minimal configuration for maximum compatibility
 export default defineConfig({
   plugins: [react()],
   define: {
@@ -12,32 +12,15 @@ export default defineConfig({
     )
   },
   build: {
-    // Use esbuild for faster, more reliable builds
+    // Minimal build configuration
     minify: 'esbuild',
+    // Disable chunking completely to avoid issues
     rollupOptions: {
       output: {
-        // Simplified chunking to avoid dependency issues
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['framer-motion']
-        },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        manualChunks: undefined
       }
     },
-    // Enable gzip compression
-    reportCompressedSize: true,
-    // Optimize chunks
-    chunkSizeWarningLimit: 1000,
-    // Source maps for production debugging
-    sourcemap: false,
-    // Target modern browsers
-    target: 'esnext'
-  },
-  // Enable pre-bundling for faster dev
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion']
+    // Target ES2020 for better compatibility
+    target: 'es2020'
   }
 })
