@@ -1,0 +1,12 @@
+[33m4b9f237[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Initial commit: Sairaj Travels Frontend - React Application
+[33m24cbb17[m Fix hardcoded localhost URLs - Use environment variable for API endpoints
+[33m8e250ee[m Trigger redeploy: Frontend auto-deployment 2025-10-08 03:23:52
+[33meac8f0c[m  Update API configuration to use correct backend URL: sairaj-travels-v4-backend.onrender.com
+[33mc41acae[m  Fix Tailwind CSS build: Move tailwindcss, autoprefixer, and postcss to dependencies for production build
+[33md96d399[m  Fix Vite module resolution: Move Vite and @vitejs/plugin-react to dependencies to ensure availability in production build
+[33m9002aef[m  Final fix: Upgrade to Node.js 20.19.0 to meet Vite 7.1.6 requirements (requires Node 20.19+ or 22.12+)
+[33md1b4df6[m  Fix Vite command: Use npx vite instead of vite to ensure proper execution in production environment
+[33m608b941[m  Fix deployment: Upgrade to Node.js 20.11.0 LTS, fix build commands, and ensure Vite availability
+[33m1cde833[m  Fix deployment issues: Add Node.js version constraints, fix build commands, and add .nvmrc for consistent Node version
+[33mccbd737[m  Updated API configuration to connect to sairaj-travels-v4-backend.onrender.com
+[33m907014e[m  Production-ready Sairaj Travels Frontend v4 - Complete deployment setup with optimized build, multiple deployment options, and comprehensive documentation
