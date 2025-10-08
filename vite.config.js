@@ -12,28 +12,15 @@ export default defineConfig({
     )
   },
   build: {
-    // Performance optimizations
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
-      },
-      mangle: {
-        safari10: true
-      }
-    },
+    // Use esbuild for faster, more reliable builds
+    minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Simplified chunk splitting to avoid dependency issues
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor-react';
-            }
-            return 'vendor';
-          }
+        // Simplified chunking to avoid dependency issues
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['framer-motion']
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
