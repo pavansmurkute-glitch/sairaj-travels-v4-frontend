@@ -1,13 +1,14 @@
 services:
   - type: web
     name: sairaj-travels-v4-frontend
-    env: docker
+    env: static
     region: singapore
     plan: free
     repo: https://github.com/pavansmurkute-glitch/sairaj-travels-v4-frontend.git
     branch: main
     rootDir: .
-    dockerfilePath: ./Dockerfile
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         value: https://sairaj-travels-v4-backend.onrender.com
