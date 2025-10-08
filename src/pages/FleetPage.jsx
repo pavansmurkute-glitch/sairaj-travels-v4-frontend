@@ -1,31 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IMAGE_BASE_URL } from "../config";
 import api, { apiMethods } from "../services/api";
 
-export default function FleetPage() {
+const FleetPage = React.memo(function FleetPage() {
   const [vehicles, setVehicles] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
 
-  useEffect(() => {
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0);
-    
+  const fetchVehicles = useCallback(async () => {
     setLoading(true);
-    apiMethods
-      .get("/vehicle-details")
-      .then((res) => {
-        console.log("API Response:", res.data);
-        console.log("First vehicle image:", res.data[0]?.vehicle?.mainImageUrl);
-        setVehicles(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching vehicles:", err);
-        // Fallback to static vehicle data
-        const fallbackVehicles = [
+    try {
+      const res = await apiMethods.get("/vehicle-details");
+      setVehicles(res.data);
+    } catch (err) {
+      // Fallback to static vehicle data
+      const fallbackVehicles = [
           {
             vehicle: {
               vehicleId: 1,
@@ -77,10 +68,16 @@ export default function FleetPage() {
             }
           }
         ];
-        setVehicles(fallbackVehicles);
-        setLoading(false);
-      });
+      setVehicles(fallbackVehicles);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchVehicles();
+  }, [fetchVehicles]);
 
   if (loading) {
     return (
@@ -288,4 +285,6 @@ export default function FleetPage() {
       </section>
     </div>
   );
-}
+});
+
+export default FleetPage;

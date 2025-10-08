@@ -38,28 +38,10 @@ export default function ContactUs() {
    useEffect(() => {
      const fetchData = async () => {
        try {
-         console.log('🔍 ContactUs: Fetching contact info...');
-         console.log('🌐 API Base URL:', import.meta.env.VITE_API_URL);
-         console.log('📡 Full URL will be:', `${import.meta.env.VITE_API_URL}/api/contact`);
-         
          const res = await apiMethods.get("/contact");
-         const data = res.data;
-         console.log('✅ ContactUs: Contact info received:', data);
-         setContact(data);
+         setContact(res.data);
        } catch (err) {
-         console.error("❌ ContactUs: Error fetching contact info:", err);
-         console.error('📊 ContactUs: Error Details:', {
-           message: err.message,
-           status: err.response?.status,
-           statusText: err.response?.statusText,
-           data: err.response?.data,
-           config: {
-             url: err.config?.url,
-             baseURL: err.config?.baseURL,
-             method: err.config?.method
-           },
-           request: err.request ? 'Network request made but no response' : 'No network request made'
-         });
+         // Handle error silently - contact form will still work
        } finally {
          setLoading(false);
        }
@@ -86,7 +68,6 @@ export default function ContactUs() {
       setFeedback("✅ Message sent successfully!");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
-      console.error("Error sending message:", error);
       setFeedback("⚠️ Something went wrong!");
     } finally {
       setSubmitting(false);

@@ -18,18 +18,63 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
+        passes: 2,
+        unsafe: true,
+        unsafe_comps: true,
+        unsafe_math: true
+      },
+      mangle: {
+        safari10: true
       }
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['framer-motion'],
-          maps: ['leaflet', 'react-leaflet'],
-          utils: ['axios', 'html2canvas', 'jspdf']
-        }
+        manualChunks: (id) => {
+          // Vendor chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-ui';
+            }
+            if (id.includes('leaflet') || id.includes('react-leaflet')) {
+              return 'vendor-maps';
+            }
+            if (id.includes('react-icons') || id.includes('lucide-react') || id.includes('phosphor-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('axios')) {
+              return 'vendor-http';
+            }
+            if (id.includes('html2canvas') || id.includes('jspdf')) {
+              return 'vendor-utils';
+            }
+            // Other node_modules
+            return 'vendor-other';
+          }
+          
+          // App chunks
+          if (id.includes('src/pages/Admin')) {
+            return 'admin';
+          }
+          if (id.includes('src/pages/')) {
+            return 'pages';
+          }
+          if (id.includes('src/components/')) {
+            return 'components';
+          }
+          if (id.includes('src/services/')) {
+            return 'services';
+          }
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
     // Enable gzip compression

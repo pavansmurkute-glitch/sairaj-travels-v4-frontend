@@ -1,9 +1,8 @@
 import axios from "axios";
 import overlayService from "./overlayService";
+import cacheService from "./cacheService";
 
-// Debug: Log environment variables - FORCE REDEPLOY
-console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
-console.log('All env vars:', import.meta.env);
+// Production-ready API service with caching
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : "https://sairaj-travels-v4-backend.onrender.com/api",
@@ -13,7 +12,6 @@ const api = axios.create({
   }
 });
 
-console.log('API Base URL:', api.defaults.baseURL);
 
 let pending = 0;
 let requestStartTime = null;
@@ -84,6 +82,12 @@ api.interceptors.response.use(
           break;
         case 401:
           errorMessage = 'Unauthorized. Please login again.';
+          // Redirect to login if unauthorized
+          if (typeof window !== 'undefined' && window.location.pathname.includes('/admin')) {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = '/admin/login';
+          }
           break;
         case 403:
           errorMessage = 'Access denied. You don\'t have permission.';
@@ -113,44 +117,92 @@ api.interceptors.response.use(
   }
 );
 
-// Enhanced API methods
+// Enhanced API methods with caching
 export const apiMethods = {
-  // GET with loading message
+  // GET with loading message and caching
   get: (url, config = {}) => {
+    const cacheKey = cacheService.generateKey(url, config.params);
+    
+    // Check cache first for GET requests
+    if (!config.skipCache) {
+      const cachedData = cacheService.get(cacheKey);
+      if (cachedData) {
+        return Promise.resolve({ data: cachedData });
+      }
+    }
+
     return api.get(url, {
       ...config,
       loadingMessage: config.loadingMessage || 'Loading data...'
+    }).then(response => {
+      // Cache successful GET responses
+      if (!config.skipCache && response.status === 200) {
+        const ttl = config.cacheTTL || (5 * 60 * 1000); // 5 minutes default
+        cacheService.set(cacheKey, response.data, ttl);
+      }
+      return response;
     });
   },
   
-  // POST with success message
+  // POST with success message and cache invalidation
   post: (url, data, config = {}) => {
     return api.post(url, data, {
       ...config,
       loadingMessage: config.loadingMessage || 'Saving data...',
       showSuccessMessage: true,
       successMessage: config.successMessage || 'Data saved successfully!'
+    }).then(response => {
+      // Clear related cache entries after POST
+      if (config.invalidateCache) {
+        cacheService.clearByPattern(config.invalidateCache);
+      }
+      return response;
     });
   },
   
-  // PUT with success message
+  // PUT with success message and cache invalidation
   put: (url, data, config = {}) => {
     return api.put(url, data, {
       ...config,
       loadingMessage: config.loadingMessage || 'Updating data...',
       showSuccessMessage: true,
       successMessage: config.successMessage || 'Data updated successfully!'
+    }).then(response => {
+      // Clear related cache entries after PUT
+      if (config.invalidateCache) {
+        cacheService.clearByPattern(config.invalidateCache);
+      }
+      return response;
     });
   },
   
-  // DELETE with confirmation
+  // DELETE with confirmation and cache invalidation
   delete: (url, config = {}) => {
     return api.delete(url, {
       ...config,
       loadingMessage: config.loadingMessage || 'Deleting data...',
       showSuccessMessage: true,
       successMessage: config.successMessage || 'Data deleted successfully!'
+    }).then(response => {
+      // Clear related cache entries after DELETE
+      if (config.invalidateCache) {
+        cacheService.clearByPattern(config.invalidateCache);
+      }
+      return response;
     });
+  },
+
+  // Cache management methods
+  clearCache: (pattern) => {
+    if (pattern) {
+      cacheService.clearByPattern(pattern);
+    } else {
+      cacheService.clearAll();
+    }
+  },
+
+  getCacheStats: () => {
+    return cacheService.getStats();
   }
 };
 

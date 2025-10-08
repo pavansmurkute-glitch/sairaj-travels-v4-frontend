@@ -92,7 +92,6 @@ export default function BookingPage() {
         setVehicles(mapped);
       })
       .catch((err) => {
-        console.error("Error fetching vehicles:", err);
         setVehicles([]);
       })
       .finally(() => setLoadingVehicles(false));
@@ -119,7 +118,7 @@ export default function BookingPage() {
         }
       })
       .catch((err) => {
-        console.error("Error fetching vehicle details:", err);
+        // Handle error silently
       });
   }, [vehicleId]);
 
@@ -144,7 +143,6 @@ export default function BookingPage() {
         setPackages(res.data || []);
       })
       .catch((err) => {
-        console.error("Error fetching packages:", err);
         setPackages([]);
       })
       .finally(() => setLoadingPackages(false));
@@ -191,11 +189,8 @@ export default function BookingPage() {
         status: "PENDING"
       };
 
-      console.log("Booking payload:", payload);
-
       // Submit booking to backend
       const response = await apiMethods.post("/vehicle-bookings", payload);
-      console.log("Booking response:", response.data);
 
       setMessage("✅ Booking submitted successfully! We'll contact you shortly.");
       setBookingSubmitted(true);
@@ -222,7 +217,6 @@ export default function BookingPage() {
         setMessage("");
       }, 5000);
     } catch (err) {
-      console.error("Booking submission error:", err);
       setMessage("❌ Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

@@ -101,7 +101,7 @@ const AdminVehicles = () => {
       const response = await api.get('/vehicles');
       setVehicles(response.data || []);
     } catch (error) {
-      console.error('Error loading vehicles:', error);
+      // Handle error silently
     } finally {
       setIsLoading(false);
     }
@@ -158,7 +158,6 @@ const AdminVehicles = () => {
       resetForm();
       alert('Vehicle created successfully!');
     } catch (error) {
-      console.error('Error creating vehicle:', error);
       alert(`Error creating vehicle: ${error.response?.data?.message || error.message}`);
     }
   };
@@ -170,7 +169,6 @@ const AdminVehicles = () => {
       setShowModal(false);
       alert('Vehicle updated successfully!');
     } catch (error) {
-      console.error('Error updating vehicle:', error);
       alert(`Error updating vehicle: ${error.response?.data?.message || error.message}`);
     }
   };
@@ -182,7 +180,6 @@ const AdminVehicles = () => {
         await loadVehicles();
         alert('Vehicle deleted successfully!');
       } catch (error) {
-        console.error('Error deleting vehicle:', error);
         alert(`Error deleting vehicle: ${error.response?.data?.message || error.message}`);
       }
     }
@@ -190,43 +187,12 @@ const AdminVehicles = () => {
 
   const loadVehicleDetails = async (vehicleId) => {
     try {
-      console.log('Loading vehicle details for vehicle ID:', vehicleId);
-      
-      // Test if backend is running first
-      try {
-        const testResponse = await api.get('/vehicles');
-        console.log('Backend is running, vehicles count:', testResponse.data?.length);
-      } catch (testError) {
-        console.error('Backend connection failed:', testError);
-        alert('Backend server is not running. Please start the backend server first.');
-        return;
-      }
-      
       const [pricingResponse, chargesResponse, termsResponse, imagesResponse] = await Promise.all([
-        api.get(`/vehicle-pricing/vehicle/${vehicleId}`).catch((err) => {
-          console.log('Pricing API error:', err.response?.status, err.response?.data);
-          return { data: [] };
-        }),
-        api.get(`/vehicle-charges/vehicle/${vehicleId}`).catch((err) => {
-          console.log('Charges API error:', err.response?.status, err.response?.data);
-          return { data: [] };
-        }),
-        api.get(`/vehicle-terms/vehicle/${vehicleId}`).catch((err) => {
-          console.log('Terms API error:', err.response?.status, err.response?.data);
-          return { data: [] };
-        }),
-        api.get(`/vehicle-images/vehicle/${vehicleId}`).catch((err) => {
-          console.log('Images API error:', err.response?.status, err.response?.data);
-          return { data: [] };
-        })
+        api.get(`/vehicle-pricing/vehicle/${vehicleId}`).catch(() => ({ data: [] })),
+        api.get(`/vehicle-charges/vehicle/${vehicleId}`).catch(() => ({ data: [] })),
+        api.get(`/vehicle-terms/vehicle/${vehicleId}`).catch(() => ({ data: [] })),
+        api.get(`/vehicle-images/vehicle/${vehicleId}`).catch(() => ({ data: [] }))
       ]);
-      
-      console.log('API Responses:', {
-        pricing: pricingResponse.data,
-        charges: chargesResponse.data,
-        terms: termsResponse.data,
-        images: imagesResponse.data
-      });
       
       setVehicleDetails({
         pricing: pricingResponse.data || [],
@@ -235,7 +201,6 @@ const AdminVehicles = () => {
         images: imagesResponse.data || []
       });
     } catch (error) {
-      console.error('Error loading vehicle details:', error);
       alert('Error loading vehicle details. Check console for details.');
     }
   };
@@ -427,15 +392,9 @@ const AdminVehicles = () => {
       console.log('Images response:', imagesResponse.data);
       
       // Reload data
-      console.log('Reloading vehicle details...');
       await loadVehicleDetails(selectedVehicle.vehicleId);
-      console.log('Vehicle details reloaded successfully');
       alert('Sample data added successfully! Please check the tabs to see the new data.');
     } catch (error) {
-      console.error('Error adding sample data:', error);
-      console.error('Error response:', error.response?.data);
-      console.error('Error status:', error.response?.status);
-      
       let errorMessage = 'Error adding sample data: ';
       if (error.response?.data?.message) {
         errorMessage += error.response.data.message;
