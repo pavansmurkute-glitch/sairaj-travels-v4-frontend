@@ -37,6 +37,16 @@ const EmailSettingsToggle = ({ token }) => {
   const toggleEmailEnabled = async () => {
     try {
       setLoading(true);
+      
+      // Debug: Check if token exists
+      if (!token) {
+        alert('No authentication token found. Please login again.');
+        return;
+      }
+      
+      console.log('Token being sent:', token);
+      console.log('API URL:', `${API_BASE_URL}/admin/email-settings/toggle`);
+      
       const response = await fetch(`${API_BASE_URL}/admin/email-settings/toggle`, {
         method: 'POST',
         headers: {
@@ -46,17 +56,21 @@ const EmailSettingsToggle = ({ token }) => {
         body: JSON.stringify({ enabled: !emailEnabled }),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (response.ok) {
         const data = await response.json();
         setEmailEnabled(!emailEnabled);
         alert(data.message);
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Failed to toggle email settings');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        alert(`Failed to toggle email settings: ${response.status} - ${errorText}`);
       }
     } catch (error) {
       console.error('Error toggling email settings:', error);
-      alert('Error toggling email settings');
+      alert(`Error toggling email settings: ${error.message}`);
     } finally {
       setLoading(false);
     }
