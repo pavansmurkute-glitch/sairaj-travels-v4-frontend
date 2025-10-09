@@ -67,11 +67,16 @@ const ForgotPassword = () => {
       });
 
       const data = await response.json();
+      
+      console.log('Forgot password response:', data);
+      console.log('Response status:', response.status);
 
       if (data.success) {
+        console.log('Success! Setting message:', data.message);
         setMessage(data.message);
         setEmail('');
       } else {
+        console.log('Error! Setting error:', data.message);
         setError(data.message);
       }
     } catch (error) {
