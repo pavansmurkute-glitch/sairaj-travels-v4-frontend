@@ -5,6 +5,8 @@ const EmailSettingsToggle = ({ token }) => {
   const [loading, setLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState(true);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://sairaj-travels-v5-backend.onrender.com/api';
+
   // Fetch current email status
   useEffect(() => {
     fetchEmailStatus();
