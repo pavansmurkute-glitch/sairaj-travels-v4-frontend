@@ -13,7 +13,7 @@ const EmailSettingsToggle = ({ token }) => {
   const fetchEmailStatus = async () => {
     try {
       setLoadingStatus(true);
-      const response = await fetch('/api/admin/email-settings/status', {
+      const response = await fetch(`${API_BASE_URL}/admin/email-settings/status`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const EmailSettingsToggle = ({ token }) => {
   const toggleEmailEnabled = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/email-settings/toggle', {
+      const response = await fetch(`${API_BASE_URL}/admin/email-settings/toggle`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -65,7 +65,7 @@ const EmailSettingsToggle = ({ token }) => {
   const testEmailConfiguration = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/email-settings/test', {
+      const response = await fetch(`${API_BASE_URL}/admin/email-settings/test`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
