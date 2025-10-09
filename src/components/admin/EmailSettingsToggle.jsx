@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-hot-toast';
 
 const EmailSettingsToggle = ({ token }) => {
   const [emailEnabled, setEmailEnabled] = useState(false);
@@ -25,11 +24,11 @@ const EmailSettingsToggle = ({ token }) => {
         const data = await response.json();
         setEmailEnabled(data.emailEnabled);
       } else {
-        toast.error('Failed to fetch email status');
+        alert('Failed to fetch email status');
       }
     } catch (error) {
       console.error('Error fetching email status:', error);
-      toast.error('Error fetching email status');
+      alert('Error fetching email status');
     } finally {
       setLoadingStatus(false);
     }
@@ -50,14 +49,14 @@ const EmailSettingsToggle = ({ token }) => {
       if (response.ok) {
         const data = await response.json();
         setEmailEnabled(!emailEnabled);
-        toast.success(data.message);
+        alert(data.message);
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || 'Failed to toggle email settings');
+        alert(errorData.message || 'Failed to toggle email settings');
       }
     } catch (error) {
       console.error('Error toggling email settings:', error);
-      toast.error('Error toggling email settings');
+      alert('Error toggling email settings');
     } finally {
       setLoading(false);
     }
@@ -76,14 +75,14 @@ const EmailSettingsToggle = ({ token }) => {
 
       if (response.ok) {
         const data = await response.json();
-        toast.success(data.message);
+        alert(data.message);
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || 'Email test failed');
+        alert(errorData.message || 'Email test failed');
       }
     } catch (error) {
       console.error('Error testing email configuration:', error);
-      toast.error('Error testing email configuration');
+      alert('Error testing email configuration');
     } finally {
       setLoading(false);
     }
