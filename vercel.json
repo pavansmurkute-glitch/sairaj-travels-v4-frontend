@@ -16,6 +16,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://sairaj-travels-v4-backend.onrender.com"
+    "VITE_API_URL": "https://sairaj-travels-v5-backend.onrender.com"
   }
 }
