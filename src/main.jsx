@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { OverlayProvider } from "./context/OverlayContext";
-import { BrowserRouter, HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 
 // Add error boundary and logging
@@ -19,15 +19,12 @@ try {
   const root = ReactDOM.createRoot(rootElement);
   console.log("React root created successfully");
   
-  // Use HashRouter for better compatibility with static hosting
-  const Router = window.location.hash ? HashRouter : BrowserRouter;
-  
   root.render(
     <React.StrictMode>
       <OverlayProvider>
-        <Router>
+        <BrowserRouter>
           <App />
-        </Router>
+        </BrowserRouter>
       </OverlayProvider>
     </React.StrictMode>
   );

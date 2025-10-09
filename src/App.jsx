@@ -41,7 +41,6 @@ import AdminFileManager from "./pages/AdminFileManager";
 import AdminUsers from "./pages/AdminUsers";
 import AdminRoleManagement from "./pages/AdminRoleManagement";
 import ForgotPassword from "./pages/ForgotPassword";
-import AdminRouteTest from "./components/AdminRouteTest";
 import AdminContact from "./pages/AdminContact";
 import AdminTestimonials from "./pages/AdminTestimonials";
 import AdminGallery from "./pages/AdminGallery";
@@ -450,7 +449,7 @@ useEffect(() => {
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
-            <Route path="/admin/reset-password" element={<AdminRouteTest />} />
+            <Route path="/admin/reset-password" element={<ForgotPassword />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/bookings" element={<AdminBookings />} />
             <Route path="/admin/enquiries" element={<AdminEnquiries />} />

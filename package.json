@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "npx vite preview",
     "start": "npx vite preview --port $PORT --host 0.0.0.0",
-    "start:server": "node server.js",
     "postinstall": "echo 'Dependencies installed successfully'"
   },
   "dependencies": {
@@ -17,7 +16,6 @@
     "@heroicons/react": "^2.2.0",
     "@mapbox/polyline": "^1.2.1",
     "axios": "^1.12.2",
-    "express": "^4.18.2",
     "framer-motion": "^12.23.16",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.3",

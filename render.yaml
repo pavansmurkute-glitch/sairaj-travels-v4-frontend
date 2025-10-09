@@ -1,18 +1,18 @@
 services:
   - type: web
     name: sairaj-travels-v5-frontend
-    env: node
+    env: static
     region: singapore
     plan: free
     repo: https://github.com/pavansmurkute-glitch/sairaj-travels-v4-frontend.git
     branch: main
     rootDir: .
     buildCommand: npm install && npm run build
-    startCommand: npm run start:server
+    publishPath: dist
     envVars:
       - key: VITE_API_URL
         value: https://sairaj-travels-v5-backend.onrender.com
-      - key: NODE_ENV
-        value: production
-      - key: NODE_VERSION
-        value: 20.19.0
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
