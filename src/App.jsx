@@ -41,6 +41,7 @@ import AdminFileManager from "./pages/AdminFileManager";
 import AdminUsers from "./pages/AdminUsers";
 import AdminRoleManagement from "./pages/AdminRoleManagement";
 import ForgotPassword from "./pages/ForgotPassword";
+import AdminRouteTest from "./components/AdminRouteTest";
 import AdminContact from "./pages/AdminContact";
 import AdminTestimonials from "./pages/AdminTestimonials";
 import AdminGallery from "./pages/AdminGallery";
@@ -429,7 +430,9 @@ useEffect(() => {
       <main className="flex-grow min-h-screen">
         {/* ROUTES for secondary pages */}
         <Routes>
-
+            {/* Default Home Route */}
+            <Route path="/" element={<div></div>} />
+            
             <Route path="/about" element={<AboutUs />} />
             <Route path="/services" element={<Services />} />
             <Route path="/fleet" element={<FleetPage />} />
@@ -447,7 +450,7 @@ useEffect(() => {
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
-            <Route path="/admin/reset-password" element={<ForgotPassword />} />
+            <Route path="/admin/reset-password" element={<AdminRouteTest />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/bookings" element={<AdminBookings />} />
             <Route path="/admin/enquiries" element={<AdminEnquiries />} />
@@ -461,6 +464,9 @@ useEffect(() => {
             <Route path="/admin/testimonials" element={<AdminTestimonials />} />
             <Route path="/admin/gallery" element={<AdminGallery />} />
             <Route path="/admin/reports" element={<AdminReports />} />
+
+            {/* Catch-all route for unmatched paths */}
+            <Route path="*" element={<div></div>} />
 
           {/* add other routes here later */}
         </Routes>
