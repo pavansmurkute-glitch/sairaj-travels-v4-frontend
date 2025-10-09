@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../services/api';
+import EmailSettingsToggle from '../components/admin/EmailSettingsToggle';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -384,6 +385,13 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* Email Settings Management */}
+        {canAccess('system_settings') && (
+          <div className="mb-8" data-email-settings>
+            <EmailSettingsToggle token={localStorage.getItem('adminToken')} />
+          </div>
+        )}
+
         {/* Quick Navigation */}
         <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
           <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
@@ -582,6 +590,28 @@ const AdminDashboard = () => {
                   </svg>
                 </div>
                 <p className="text-sm font-semibold text-gray-900">Reports</p>
+              </motion.button>
+            )}
+
+            {canAccess('system_settings') && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  // Scroll to email settings section
+                  const emailSection = document.querySelector('[data-email-settings]');
+                  if (emailSection) {
+                    emailSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center border border-emerald-200"
+              >
+                <div className="bg-emerald-500 p-3 rounded-xl w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-gray-900">Email Settings</p>
               </motion.button>
             )}
           </div>
