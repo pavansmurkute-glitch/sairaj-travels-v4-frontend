@@ -60,6 +60,8 @@ const AdminTestimonials = () => {
   const handleUpdateTestimonial = async (e) => {
     e.preventDefault();
     try {
+      console.log('Updating testimonial with data:', formData);
+      console.log('Selected testimonial ID:', selectedTestimonial.id);
       await apiMethods.put(`/testimonials/${selectedTestimonial.id}`, formData);
       await loadTestimonials();
       setShowEditModal(false);
@@ -98,8 +100,9 @@ const AdminTestimonials = () => {
   };
 
   const handleEdit = (testimonial) => {
+    console.log('Editing testimonial:', testimonial);
     setSelectedTestimonial(testimonial);
-    setFormData({
+    const formDataToSet = {
       customerName: testimonial.customerName || '',
       customerType: testimonial.customerType || '',
       testimonialText: testimonial.testimonialText || '',
@@ -107,7 +110,9 @@ const AdminTestimonials = () => {
       avatarLetter: testimonial.avatarLetter || '',
       isActive: testimonial.isActive !== undefined ? testimonial.isActive : true,
       sortOrder: testimonial.sortOrder || 0
-    });
+    };
+    console.log('Setting form data:', formDataToSet);
+    setFormData(formDataToSet);
     setShowEditModal(true);
   };
 
