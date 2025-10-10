@@ -7,7 +7,7 @@ export default defineConfig({
   define: {
     'import.meta.env.VITE_API_BASE': JSON.stringify(
       process.env.NODE_ENV === 'production' 
-        ? 'https://sairaj-travels-v4-backend.onrender.com/api'
+        ? 'https://sairaj-travels-v5-backend.onrender.com/api'
         : 'http://localhost:8080/api'
     )
   },

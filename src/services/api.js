@@ -5,7 +5,7 @@ import cacheService from "./cacheService";
 // Production-ready API service with caching
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : "https://sairaj-travels-v4-backend.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : "https://sairaj-travels-v5-backend.onrender.com/api",
   timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json',
