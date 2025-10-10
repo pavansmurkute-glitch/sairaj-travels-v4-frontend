@@ -44,10 +44,14 @@ const AdminVehicles = () => {
     fuelIncluded: false,
     tollIncluded: false
   });
+  const [isEditingCharges, setIsEditingCharges] = useState(false);
+  const [editingChargesId, setEditingChargesId] = useState(null);
   
   const [termsForm, setTermsForm] = useState({
     termText: ''
   });
+  const [isEditingTerms, setIsEditingTerms] = useState(false);
+  const [editingTermsId, setEditingTermsId] = useState(null);
   
   const [imagesForm, setImagesForm] = useState({
     imageUrl: ''
@@ -276,11 +280,22 @@ const AdminVehicles = () => {
         ...chargesForm,
         vehicleId: selectedVehicle.vehicleId
       };
-      await api.post('/vehicle-charges', chargesData);
+      
+      if (isEditingCharges && editingChargesId) {
+        // Update existing charges
+        await api.put(`/vehicle-charges/${editingChargesId}`, chargesData);
+        alert('Charges updated successfully!');
+      } else {
+        // Create new charges
+        await api.post('/vehicle-charges', chargesData);
+        alert('Charges added successfully!');
+      }
+      
       await loadVehicleDetails(selectedVehicle.vehicleId);
       setShowChargesModal(false);
       setChargesForm({ driverAllowance: '', nightCharge: '', fuelIncluded: false, tollIncluded: false });
-      alert('Charges added successfully!');
+      setIsEditingCharges(false);
+      setEditingChargesId(null);
     } catch (error) {
       console.error('Error saving charges:', error);
       alert(`Error saving charges: ${error.response?.data?.message || error.message}`);
@@ -294,11 +309,22 @@ const AdminVehicles = () => {
         ...termsForm,
         vehicleId: selectedVehicle.vehicleId
       };
-      await api.post('/vehicle-terms', termsData);
+      
+      if (isEditingTerms && editingTermsId) {
+        // Update existing terms
+        await api.put(`/vehicle-terms/${editingTermsId}`, termsData);
+        alert('Terms updated successfully!');
+      } else {
+        // Create new terms
+        await api.post('/vehicle-terms', termsData);
+        alert('Terms added successfully!');
+      }
+      
       await loadVehicleDetails(selectedVehicle.vehicleId);
       setShowTermsModal(false);
       setTermsForm({ termText: '' });
-      alert('Terms added successfully!');
+      setIsEditingTerms(false);
+      setEditingTermsId(null);
     } catch (error) {
       console.error('Error saving terms:', error);
       alert(`Error saving terms: ${error.response?.data?.message || error.message}`);
@@ -1080,7 +1106,12 @@ const AdminVehicles = () => {
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="text-md font-medium text-gray-900">Additional Charges</h4>
                         <button 
-                          onClick={() => setShowChargesModal(true)}
+                          onClick={() => {
+                            setIsEditingCharges(false);
+                            setEditingChargesId(null);
+                            setChargesForm({ driverAllowance: '', nightCharge: '', fuelIncluded: false, tollIncluded: false });
+                            setShowChargesModal(true);
+                          }}
                           className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
                         >
                           Add Charges
@@ -1119,6 +1150,8 @@ const AdminVehicles = () => {
                                           fuelIncluded: charge.fuelIncluded,
                                           tollIncluded: charge.tollIncluded
                                         });
+                                        setIsEditingCharges(true);
+                                        setEditingChargesId(charge.chargeId);
                                         setShowChargesModal(true);
                                       }}
                                       className="text-blue-600 hover:text-blue-800 text-xs"
@@ -1148,7 +1181,12 @@ const AdminVehicles = () => {
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="text-md font-medium text-gray-900">Terms & Conditions</h4>
                         <button 
-                          onClick={() => setShowTermsModal(true)}
+                          onClick={() => {
+                            setIsEditingTerms(false);
+                            setEditingTermsId(null);
+                            setTermsForm({ termText: '' });
+                            setShowTermsModal(true);
+                          }}
                           className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700"
                         >
                           Add Terms
@@ -1167,6 +1205,8 @@ const AdminVehicles = () => {
                                         setTermsForm({
                                           termText: term.termText
                                         });
+                                        setIsEditingTerms(true);
+                                        setEditingTermsId(term.termId);
                                         setShowTermsModal(true);
                                       }}
                                       className="text-blue-600 hover:text-blue-800 text-xs"
@@ -1353,7 +1393,9 @@ const AdminVehicles = () => {
             <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Add Additional Charges</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {isEditingCharges ? 'Edit Additional Charges' : 'Add Additional Charges'}
+                  </h3>
                   <button
                     onClick={() => setShowChargesModal(false)}
                     className="text-gray-400 hover:text-gray-600"
@@ -1423,7 +1465,7 @@ const AdminVehicles = () => {
                       type="submit"
                       className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
                     >
-                      Save Charges
+                      {isEditingCharges ? 'Update Charges' : 'Save Charges'}
                     </button>
                   </div>
                 </form>
@@ -1438,7 +1480,9 @@ const AdminVehicles = () => {
             <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Add Terms & Conditions</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {isEditingTerms ? 'Edit Terms & Conditions' : 'Add Terms & Conditions'}
+                  </h3>
                   <button
                     onClick={() => setShowTermsModal(false)}
                     className="text-gray-400 hover:text-gray-600"
@@ -1474,7 +1518,7 @@ const AdminVehicles = () => {
                       type="submit"
                       className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
                     >
-                      Save Terms
+                      {isEditingTerms ? 'Update Terms' : 'Save Terms'}
                     </button>
                   </div>
                 </form>
