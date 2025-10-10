@@ -35,6 +35,8 @@ const AdminVehicles = () => {
     minKmPerDay: '',
     packageHours: ''
   });
+  const [isEditingPricing, setIsEditingPricing] = useState(false);
+  const [editingPricingId, setEditingPricingId] = useState(null);
   
   const [chargesForm, setChargesForm] = useState({
     driverAllowance: '',
@@ -219,11 +221,22 @@ const AdminVehicles = () => {
         ...pricingForm,
         vehicleId: selectedVehicle.vehicleId
       };
-      await api.post('/vehicle-pricing', pricingData);
+      
+      if (isEditingPricing && editingPricingId) {
+        // Update existing pricing
+        await api.put(`/vehicle-pricing/${editingPricingId}`, pricingData);
+        alert('Pricing updated successfully!');
+      } else {
+        // Create new pricing
+        await api.post('/vehicle-pricing', pricingData);
+        alert('Pricing added successfully!');
+      }
+      
       await loadVehicleDetails(selectedVehicle.vehicleId);
       setShowPricingModal(false);
       setPricingForm({ rateType: '', ratePerKm: '', minKmPerDay: '', packageHours: '' });
-      alert('Pricing added successfully!');
+      setIsEditingPricing(false);
+      setEditingPricingId(null);
     } catch (error) {
       console.error('Error saving pricing:', error);
       alert(`Error saving pricing: ${error.response?.data?.message || error.message}`);
@@ -984,7 +997,12 @@ const AdminVehicles = () => {
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="text-md font-medium text-gray-900">Pricing Information</h4>
                         <button 
-                          onClick={() => setShowPricingModal(true)}
+                          onClick={() => {
+                            setIsEditingPricing(false);
+                            setEditingPricingId(null);
+                            setPricingForm({ rateType: '', ratePerKm: '', minKmPerDay: '', packageHours: '' });
+                            setShowPricingModal(true);
+                          }}
                           className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
                         >
                           Add Pricing
@@ -1030,7 +1048,9 @@ const AdminVehicles = () => {
                                           minKmPerDay: pricing.minKmPerDay,
                                           packageHours: pricing.packageHours
                                         });
-                                        console.log('Opening pricing modal...');
+                                        setIsEditingPricing(true);
+                                        setEditingPricingId(pricing.pricingId);
+                                        console.log('Opening pricing modal for editing...');
                                         setShowPricingModal(true);
                                       }}
                                       className="text-blue-600 hover:text-blue-800 text-xs"
@@ -1244,7 +1264,9 @@ const AdminVehicles = () => {
             <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Add Pricing Information</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {isEditingPricing ? 'Edit Pricing Information' : 'Add Pricing Information'}
+                  </h3>
                   <button
                     onClick={() => setShowPricingModal(false)}
                     className="text-gray-400 hover:text-gray-600"
@@ -1316,7 +1338,7 @@ const AdminVehicles = () => {
                       type="submit"
                       className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                     >
-                      Save Pricing
+                      {isEditingPricing ? 'Update Pricing' : 'Save Pricing'}
                     </button>
                   </div>
                 </form>
