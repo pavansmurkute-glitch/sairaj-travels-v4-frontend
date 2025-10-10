@@ -89,12 +89,16 @@ export default function Enquiry() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative"
+      className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden"
     >
-      <Icon className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+      {/* Icon Section - 20% width */}
+      <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+        <Icon className="text-blue-600 text-base sm:text-lg" />
+      </div>
+      {/* Text Input Section - 80% width */}
       <input
         {...props}
-        className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+        className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 placeholder-gray-500 text-sm sm:text-base bg-transparent"
       />
     </motion.div>
   ), []);
@@ -211,14 +215,16 @@ export default function Enquiry() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="relative"
+                  className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden"
                 >
-                  <FaList className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-lg" />
+                  <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                    <FaList className="text-blue-600 text-base sm:text-lg" />
+                  </div>
             <select
               name="service"
               value={formData.service}
               onChange={handleChange}
-                    className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                    className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
                   >
                     {services.map((service) => (
                       <option key={service} value={service}>{service}</option>
@@ -231,16 +237,18 @@ export default function Enquiry() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="relative"
+                  className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[120px] overflow-hidden"
                 >
-                  <FaComments className="absolute left-4 top-4 text-blue-600 text-lg" />
+                  <div className="w-1/5 flex items-start justify-center pt-4 bg-gray-50 border-r border-gray-200">
+                    <FaComments className="text-blue-600 text-base sm:text-lg" />
+                  </div>
             <textarea
               name="message"
                     placeholder="Tell us about your travel requirements, dates, number of passengers, and any special requests..."
               value={formData.message}
               onChange={handleChange}
                     rows="5"
-                    className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 resize-none text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                    className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 placeholder-gray-500 resize-none text-sm sm:text-base bg-transparent"
                   />
                 </motion.div>
 

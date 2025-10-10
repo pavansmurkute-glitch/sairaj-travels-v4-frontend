@@ -248,12 +248,16 @@ export default function BookingPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative"
+      className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden"
     >
-      <Icon className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+      {/* Icon Section - 20% width */}
+      <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+        <Icon className="text-blue-600 text-base sm:text-lg" />
+      </div>
+      {/* Text Input Section - 80% width */}
       <input
         {...props}
-        className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 text-sm sm:text-base mobile-input min-h-[44px] sm:min-h-[48px]"
+        className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 placeholder-gray-500 text-sm sm:text-base bg-transparent"
         autoComplete={props.type === 'email' ? 'email' : props.type === 'tel' ? 'tel' : 'name'}
       />
     </motion.div>
@@ -329,35 +333,41 @@ export default function BookingPage() {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="relative">
-                <FaCalendarAlt className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+              <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+                <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                  <FaCalendarAlt className="text-blue-600 text-base sm:text-lg" />
+                </div>
                 <input
                   type="date"
                   name="date"
                   value={formData.date}
                   onChange={handleChange}
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                  className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
                   required
                 />
               </div>
-              <div className="relative">
-                <FaClock className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+              <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+                <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                  <FaClock className="text-blue-600 text-base sm:text-lg" />
+                </div>
                 <input
                   type="time"
                   name="time"
                   value={formData.time}
                   onChange={handleChange}
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                  className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
                   required
                 />
               </div>
-              <div className="relative">
-                <FaUsers className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+              <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+                <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                  <FaUsers className="text-blue-600 text-base sm:text-lg" />
+                </div>
                 <select
                   name="passengers"
                   value={formData.passengers}
                   onChange={handleChange}
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                  className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
                 >
                   {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(num => (
                     <option key={num} value={num}>{num} Passenger{num > 1 ? 's' : ''}</option>
@@ -366,38 +376,44 @@ export default function BookingPage() {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="relative">
-                <FaCalendarAlt className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+              <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+                <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                  <FaCalendarAlt className="text-blue-600 text-base sm:text-lg" />
+                </div>
                 <input
                   type="date"
                   name="returnDate"
                   value={formData.returnDate}
                   onChange={handleChange}
                   placeholder="Return Date (Optional)"
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                  className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
                 />
               </div>
-              <div className="relative">
-                <FaSuitcase className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-base sm:text-lg z-10 pointer-events-none" />
+              <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+                <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                  <FaSuitcase className="text-blue-600 text-base sm:text-lg" />
+                </div>
                 <input
                   type="text"
                   name="luggage"
                   placeholder="Luggage Details (Optional)"
                   value={formData.luggage}
                   onChange={handleChange}
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                  className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 placeholder-gray-500 text-sm sm:text-base bg-transparent"
                 />
               </div>
             </div>
             
             {/* Package Selection - Optional */}
-            <div className="relative">
-              <FaStar className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-lg" />
+            <div className="flex border-2 border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-300 min-h-[44px] sm:min-h-[48px] overflow-hidden">
+              <div className="w-1/5 flex items-center justify-center bg-gray-50 border-r border-gray-200">
+                <FaStar className="text-blue-600 text-base sm:text-lg" />
+              </div>
               <select
                 name="selectedPackage"
                 value={formData.selectedPackage}
                 onChange={handleChange}
-                  className="w-full border-2 border-gray-200 p-3 sm:p-4 pl-12 sm:pl-16 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                className="flex-1 w-4/5 p-3 sm:p-4 border-none outline-none text-gray-700 text-sm sm:text-base bg-transparent"
               >
                 <option value="">Select a Package (Optional)</option>
                 {loadingPackages ? (
