@@ -250,10 +250,10 @@ export default function BookingPage() {
       transition={{ duration: 0.6 }}
       className="relative"
     >
-      <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-lg" />
+      <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-lg z-10 pointer-events-none" />
       <input
         {...props}
-        className="w-full border-2 border-gray-200 p-4 pl-12 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 text-base mobile-input min-h-[48px]"
+        className="w-full border-2 border-gray-200 p-4 pl-14 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500 text-base mobile-input min-h-[48px]"
         autoComplete={props.type === 'email' ? 'email' : props.type === 'tel' ? 'tel' : 'name'}
       />
     </motion.div>
