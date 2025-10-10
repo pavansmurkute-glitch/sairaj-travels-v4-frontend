@@ -192,6 +192,22 @@ export const apiMethods = {
     });
   },
 
+  // PATCH with success message and cache invalidation
+  patch: (url, data, config = {}) => {
+    return api.patch(url, data, {
+      ...config,
+      loadingMessage: config.loadingMessage || 'Updating data...',
+      showSuccessMessage: true,
+      successMessage: config.successMessage || 'Data updated successfully!'
+    }).then(response => {
+      // Clear related cache entries after PATCH
+      if (config.invalidateCache) {
+        cacheService.clearByPattern(config.invalidateCache);
+      }
+      return response;
+    });
+  },
+
   // Cache management methods
   clearCache: (pattern) => {
     if (pattern) {
