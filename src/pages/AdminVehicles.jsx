@@ -56,6 +56,8 @@ const AdminVehicles = () => {
   const [imagesForm, setImagesForm] = useState({
     imageUrl: ''
   });
+  const [isEditingImages, setIsEditingImages] = useState(false);
+  const [editingImagesId, setEditingImagesId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -338,11 +340,22 @@ const AdminVehicles = () => {
         ...imagesForm,
         vehicleId: selectedVehicle.vehicleId
       };
-      await api.post('/vehicle-images', imagesData);
+      
+      if (isEditingImages && editingImagesId) {
+        // Update existing image
+        await api.put(`/vehicle-images/${editingImagesId}`, imagesData);
+        alert('Image updated successfully!');
+      } else {
+        // Create new image
+        await api.post('/vehicle-images', imagesData);
+        alert('Image added successfully!');
+      }
+      
       await loadVehicleDetails(selectedVehicle.vehicleId);
       setShowImagesModal(false);
       setImagesForm({ imageUrl: '' });
-      alert('Image added successfully!');
+      setIsEditingImages(false);
+      setEditingImagesId(null);
     } catch (error) {
       console.error('Error saving image:', error);
       alert(`Error saving image: ${error.response?.data?.message || error.message}`);
@@ -1236,7 +1249,12 @@ const AdminVehicles = () => {
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="text-md font-medium text-gray-900">Vehicle Images</h4>
                         <button 
-                          onClick={() => setShowImagesModal(true)}
+                          onClick={() => {
+                            setIsEditingImages(false);
+                            setEditingImagesId(null);
+                            setImagesForm({ imageUrl: '' });
+                            setShowImagesModal(true);
+                          }}
                           className="bg-orange-600 text-white px-3 py-1 rounded text-sm hover:bg-orange-700"
                         >
                           Add Images
@@ -1259,6 +1277,8 @@ const AdminVehicles = () => {
                                       setImagesForm({
                                         imageUrl: image.imageUrl
                                       });
+                                      setIsEditingImages(true);
+                                      setEditingImagesId(image.imageId);
                                       setShowImagesModal(true);
                                     }}
                                     className="bg-blue-500 text-white p-1 rounded text-xs hover:bg-blue-600"
@@ -1533,7 +1553,9 @@ const AdminVehicles = () => {
             <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Add Vehicle Image</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {isEditingImages ? 'Edit Vehicle Image' : 'Add Vehicle Image'}
+                  </h3>
                   <button
                     onClick={() => setShowImagesModal(false)}
                     className="text-gray-400 hover:text-gray-600"
@@ -1572,7 +1594,7 @@ const AdminVehicles = () => {
                       type="submit"
                       className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition-colors"
                     >
-                      Save Image
+                      {isEditingImages ? 'Update Image' : 'Save Image'}
                     </button>
                   </div>
                 </form>
