@@ -38,10 +38,12 @@ const AdminGallery = () => {
     }
   };
 
-  const loadGallery = async () => {
+  const loadGallery = async (skipCache = false) => {
     try {
       setIsLoading(true);
-      const response = await apiMethods.get('/gallery');
+      const response = await apiMethods.get('/gallery', {
+        skipCache: skipCache
+      });
       setGallery(response.data || []);
     } catch (error) {
       console.error('Error loading gallery:', error);
@@ -62,8 +64,10 @@ const AdminGallery = () => {
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
-      await apiMethods.post('/gallery', formData);
-      await loadGallery();
+      await apiMethods.post('/gallery', formData, {
+        invalidateCache: 'gallery'
+      });
+      await loadGallery(true); // Force reload, skip cache
       await loadStats();
       setShowAddModal(false);
       resetForm();
@@ -77,8 +81,10 @@ const AdminGallery = () => {
   const handleUpdateItem = async (e) => {
     e.preventDefault();
     try {
-      await apiMethods.put(`/gallery/${selectedItem.id}`, formData);
-      await loadGallery();
+      await apiMethods.put(`/gallery/${selectedItem.id}`, formData, {
+        invalidateCache: 'gallery'
+      });
+      await loadGallery(true); // Force reload, skip cache
       await loadStats();
       setShowEditModal(false);
       setSelectedItem(null);
@@ -96,8 +102,10 @@ const AdminGallery = () => {
     }
     
     try {
-      await apiMethods.delete(`/gallery/${id}`);
-      await loadGallery();
+      await apiMethods.delete(`/gallery/${id}`, {
+        invalidateCache: 'gallery'
+      });
+      await loadGallery(true); // Force reload, skip cache
       await loadStats();
       alert('Gallery item deleted successfully!');
     } catch (error) {
@@ -108,8 +116,10 @@ const AdminGallery = () => {
 
   const handleToggleActive = async (id) => {
     try {
-      await apiMethods.patch(`/gallery/${id}/toggle-active`);
-      await loadGallery();
+      await apiMethods.patch(`/gallery/${id}/toggle-active`, {}, {
+        invalidateCache: 'gallery'
+      });
+      await loadGallery(true); // Force reload, skip cache
     } catch (error) {
       console.error('Error toggling active status:', error);
       alert(`Error updating status: ${error.response?.data?.message || error.message}`);
@@ -118,8 +128,10 @@ const AdminGallery = () => {
 
   const handleToggleFeatured = async (id) => {
     try {
-      await apiMethods.patch(`/gallery/${id}/toggle-featured`);
-      await loadGallery();
+      await apiMethods.patch(`/gallery/${id}/toggle-featured`, {}, {
+        invalidateCache: 'gallery'
+      });
+      await loadGallery(true); // Force reload, skip cache
     } catch (error) {
       console.error('Error toggling featured status:', error);
       alert(`Error updating featured status: ${error.response?.data?.message || error.message}`);
