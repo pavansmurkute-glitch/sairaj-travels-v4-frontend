@@ -31,10 +31,12 @@ const AdminTestimonials = () => {
     }
   };
 
-  const loadTestimonials = async () => {
+  const loadTestimonials = async (skipCache = false) => {
     try {
       setIsLoading(true);
-      const response = await apiMethods.get('/testimonials');
+      const response = await apiMethods.get('/testimonials', {
+        skipCache: skipCache
+      });
       setTestimonials(response.data || []);
     } catch (error) {
       console.error('Error loading testimonials:', error);
@@ -46,8 +48,10 @@ const AdminTestimonials = () => {
   const handleAddTestimonial = async (e) => {
     e.preventDefault();
     try {
-      await apiMethods.post('/testimonials', formData);
-      await loadTestimonials();
+      await apiMethods.post('/testimonials', formData, {
+        invalidateCache: 'testimonials'
+      });
+      await loadTestimonials(true); // Force reload, skip cache
       setShowAddModal(false);
       resetForm();
       alert('Testimonial added successfully!');
@@ -62,8 +66,10 @@ const AdminTestimonials = () => {
     try {
       console.log('Updating testimonial with data:', formData);
       console.log('Selected testimonial ID:', selectedTestimonial.id);
-      await apiMethods.put(`/testimonials/${selectedTestimonial.id}`, formData);
-      await loadTestimonials();
+      await apiMethods.put(`/testimonials/${selectedTestimonial.id}`, formData, {
+        invalidateCache: 'testimonials'
+      });
+      await loadTestimonials(true); // Force reload, skip cache
       setShowEditModal(false);
       setSelectedTestimonial(null);
       resetForm();
@@ -80,8 +86,10 @@ const AdminTestimonials = () => {
     }
     
     try {
-      await apiMethods.delete(`/testimonials/${id}`);
-      await loadTestimonials();
+      await apiMethods.delete(`/testimonials/${id}`, {
+        invalidateCache: 'testimonials'
+      });
+      await loadTestimonials(true); // Force reload, skip cache
       alert('Testimonial deleted successfully!');
     } catch (error) {
       console.error('Error deleting testimonial:', error);
@@ -91,8 +99,10 @@ const AdminTestimonials = () => {
 
   const handleToggleActive = async (id) => {
     try {
-      await apiMethods.patch(`/testimonials/${id}/toggle`);
-      await loadTestimonials();
+      await apiMethods.patch(`/testimonials/${id}/toggle`, {}, {
+        invalidateCache: 'testimonials'
+      });
+      await loadTestimonials(true); // Force reload, skip cache
     } catch (error) {
       console.error('Error toggling testimonial status:', error);
       alert(`Error updating testimonial status: ${error.response?.data?.message || error.message}`);
