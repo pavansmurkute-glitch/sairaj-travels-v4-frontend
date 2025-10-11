@@ -26,7 +26,7 @@ const AdminLogin = () => {
 
     try {
       // Try new user management system first
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v5-backend.onrender.com'}/api/admin/auth/login-enhanced`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v5-backend.onrender.com'}/api/auth/admin/login-enhanced`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
