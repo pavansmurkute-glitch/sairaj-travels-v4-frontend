@@ -30,6 +30,7 @@ import GalleryPage from "./pages/GalleryPage";
 import PackagesPage from "./pages/PackagesPage";
 
 // Admin Components
+import AdminSetup from "./pages/AdminSetup";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminBookings from "./pages/AdminBookings";
@@ -447,6 +448,7 @@ useEffect(() => {
             <Route path="/packages" element={<PackagesPage />} />
 
             {/* Admin Routes */}
+            <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
             <Route path="/admin/reset-password" element={<ForgotPassword />} />

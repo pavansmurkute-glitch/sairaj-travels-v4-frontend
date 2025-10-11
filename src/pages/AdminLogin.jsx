@@ -26,7 +26,7 @@ const AdminLogin = () => {
 
     try {
       // Try new user management system first
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v4-backend.onrender.com'}/api/admin/auth/login-enhanced`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://sairaj-travels-v5-backend.onrender.com'}/api/admin/auth/login-enhanced`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -72,33 +72,12 @@ const AdminLogin = () => {
           setError(data.message || 'Login failed');
         }
       } else {
-        // Fallback to old system if new system fails
-        if (formData.username === 'admin' && formData.password === 'admin123') {
-          localStorage.setItem('adminToken', 'admin-logged-in');
-          localStorage.setItem('adminUser', JSON.stringify({
-            username: formData.username,
-            role: { name: 'SUPER_ADMIN', displayName: 'Administrator' },
-            loginTime: new Date().toISOString()
-          }));
-          navigate('/admin/dashboard');
-        } else {
-          setError('Invalid credentials. Please try again.');
-        }
+        const errorData = await response.json().catch(() => ({ message: 'Login failed' }));
+        setError(errorData.message || 'Invalid credentials. Please try again.');
       }
     } catch (err) {
       console.error('Login error:', err);
-      // Fallback to old system on network error
-      if (formData.username === 'admin' && formData.password === 'admin123') {
-        localStorage.setItem('adminToken', 'admin-logged-in');
-        localStorage.setItem('adminUser', JSON.stringify({
-          username: formData.username,
-          role: { name: 'SUPER_ADMIN', displayName: 'Administrator' },
-          loginTime: new Date().toISOString()
-        }));
-        navigate('/admin/dashboard');
-      } else {
-        setError('Login failed. Please check your connection and try again.');
-      }
+      setError('Login failed. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
