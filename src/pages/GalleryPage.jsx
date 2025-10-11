@@ -134,6 +134,9 @@ export default function GalleryPage() {
         apiMethods.get('/gallery/stats')
       ]);
       
+      console.log('Gallery API Response:', galleryResponse.data);
+      console.log('Video items found:', (galleryResponse.data || []).filter(item => item.videoUrl));
+      
       setGalleryData(galleryResponse.data || []);
       setGalleryStats(statsResponse.data);
     } catch (error) {
@@ -412,6 +415,9 @@ export default function GalleryPage() {
                     <div 
                       className="w-full h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative cursor-pointer hover:from-gray-700 hover:to-gray-800 transition-all duration-300"
                       onClick={() => {
+                        console.log('Video clicked:', img);
+                        console.log('Video URL:', img.videoUrl);
+                        
                         if (img.videoUrl) {
                           // Handle different video URL formats
                           let videoUrl = img.videoUrl;
@@ -423,8 +429,11 @@ export default function GalleryPage() {
                             videoUrl = `https://www.youtube.com/embed/${videoUrl.split('watch?v=')[1].split('&')[0]}`;
                           }
                           
+                          console.log('Opening video URL:', videoUrl);
                           // Open video in new tab/window
                           window.open(videoUrl, '_blank', 'width=800,height=600');
+                        } else {
+                          console.log('No video URL found for item:', img);
                         }
                       }}
                     >
