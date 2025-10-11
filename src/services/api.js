@@ -38,6 +38,12 @@ api.interceptors.request.use(
       showIfNeeded(message);
     }
     
+    // Add JWT token to all requests
+    const adminToken = localStorage.getItem('adminToken');
+    if (adminToken) {
+      config.headers.Authorization = `Bearer ${adminToken}`;
+    }
+    
     // Add request timestamp for debugging
     config.metadata = { startTime: new Date() };
     
