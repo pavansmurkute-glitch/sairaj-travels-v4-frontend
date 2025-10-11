@@ -409,9 +409,27 @@ export default function GalleryPage() {
                       }}
                     />
                   ) : img.videoUrl ? (
-                    <div className="w-full h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative">
+                    <div 
+                      className="w-full h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative cursor-pointer hover:from-gray-700 hover:to-gray-800 transition-all duration-300"
+                      onClick={() => {
+                        if (img.videoUrl) {
+                          // Handle different video URL formats
+                          let videoUrl = img.videoUrl;
+                          
+                          // Convert YouTube URLs to embed format
+                          if (videoUrl.includes('youtu.be/')) {
+                            videoUrl = `https://www.youtube.com/embed/${videoUrl.split('youtu.be/')[1].split('?')[0]}`;
+                          } else if (videoUrl.includes('watch?v=')) {
+                            videoUrl = `https://www.youtube.com/embed/${videoUrl.split('watch?v=')[1].split('&')[0]}`;
+                          }
+                          
+                          // Open video in new tab/window
+                          window.open(videoUrl, '_blank', 'width=800,height=600');
+                        }
+                      }}
+                    >
                       <div className="text-center">
-                        <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-red-700 transition-colors cursor-pointer">
+                        <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-red-700 transition-colors">
                           <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z"/>
                           </svg>
