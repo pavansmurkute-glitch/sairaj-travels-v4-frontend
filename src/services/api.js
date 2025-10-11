@@ -40,7 +40,7 @@ api.interceptors.request.use(
     
     // Add JWT token to all requests
     const adminToken = localStorage.getItem('adminToken');
-    if (adminToken) {
+    if (adminToken && adminToken.trim() !== '' && adminToken !== 'null' && adminToken !== 'undefined') {
       config.headers.Authorization = `Bearer ${adminToken}`;
     }
     
